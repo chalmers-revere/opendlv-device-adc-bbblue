@@ -40,7 +40,7 @@ int32_t main(int32_t argc, char **argv) {
 
       opendlv::proxy::VoltageReading voltageReading;
       cluon::data::TimeStamp sampleTime;
-      od4.send(distanceReading, sampleTime, ID);
+      od4.send(voltageReading, sampleTime, ID);
       if (VERBOSE) {
         std::cout << "Voltage reading sent." << std::endl;
       }
