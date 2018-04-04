@@ -49,7 +49,7 @@ int32_t main(int32_t argc, char **argv) {
     uint32_t const MMAP_OFFSET{0x44C00000};
     uint32_t const MMAP_SIZE{0x481AEFFF - MMAP_OFFSET};
 
-    uint32_t *map = static_cast<uint32_t *>(mmap(nullptr, MMAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, MMAP_OFFSET));
+    uint32_t volatile *map = static_cast<uint32_t *>(mmap(nullptr, MMAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, MMAP_OFFSET));
     if(map == MAP_FAILED) {
       close(fd);
       std::cerr << "Unable to map /dev/mem" << std::endl;
