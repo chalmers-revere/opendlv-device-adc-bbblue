@@ -63,7 +63,7 @@ int32_t main(int32_t argc, char **argv) {
         }
         return true;
       }};
-    if (std::stoi(CHANNEL) > 0 && std::stoi(CHANNEL) < 4) {
+    if (std::stoi(CHANNEL) >= 0 && std::stoi(CHANNEL) =< 4) {
       od4.timeTrigger(FREQ, atFrequency);
     } else {
       std::cerr << "Not supported channel number, must be between 0 and 4." << std::endl;
