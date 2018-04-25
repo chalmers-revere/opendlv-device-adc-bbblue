@@ -43,12 +43,12 @@ int32_t main(int32_t argc, char **argv) {
       {
         int32_t output{0};
         std::ifstream adcNode("/sys/bus/iio/devices/iio:device0/in_voltage" + CHANNEL + "_raw");
-        if (!adcNode.is_open()) {
+        if (adcNode.is_open()) {
           std::string str;
           std::getline(adcNode, str);
           output = std::stoi(str);
         } else {
-          std::cerr << "Failed to read from /sys/bus/iio/devices/iio:device0/in_voltage" + CHANNEL + "_raw.";
+          std::cerr << "Failed to read from /sys/bus/iio/devices/iio:device0/in_voltage" + CHANNEL + "_raw." << std::endl;
         }
         adcNode.close();
         float const voltage{output * 1.8f / 4095.0f};
