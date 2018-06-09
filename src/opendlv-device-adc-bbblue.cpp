@@ -22,13 +22,21 @@
 #include "cluon-complete.hpp"
 #include "opendlv-standard-message-set.hpp"
 
+// Lipo jack channel 6, converstion: 1.8*11 = 19.8
+// DC jack channel 5, converseion: 1.8*11 = 19.8
+
+
 int32_t main(int32_t argc, char **argv) {
   int32_t retCode{0};
   auto commandlineArguments = cluon::getCommandlineArguments(argc, argv);
-  if (0 == commandlineArguments.count("cid") || 0 == commandlineArguments.count("freq") || 0 == commandlineArguments.count("channel")) {
+  if (0 == commandlineArguments.count("cid") ||
+      0 == commandlineArguments.count("freq") || 
+      0 == commandlineArguments.count("channel") ||
+      0 == commandlineArguments.count("conversion")
+      ) {
     std::cerr << argv[0] << " interfaces to the analog-to-digital converters on the BeagleBone Blue." << std::endl;
-    std::cerr << "Usage:   " << argv[0] << " --freq=<frequency> --cid=<OpenDaVINCI session> --channel=<the ADC channel to read> [--id=<Identifier in case of multiple sensors] [--verbose]" << std::endl;
-    std::cerr << "Example: " << argv[0] << " --freq=10 --cid=111 --channel=0" << std::endl;
+    std::cerr << "Usage:   " << argv[0] << " --freq=<frequency> --cid=<OpenDaVINCI session> --channel=<the ADC channel to read> --conversion=<constant to convert bits values to volt values> [--id=<Identifier in case of multiple sensors] [--verbose]" << std::endl;
+    std::cerr << "Example: " << argv[0] << " --freq=10 --cid=111 --channel=0 --voltageConversion=1.8" << std::endl;
     retCode = 1;
   } else {
     uint32_t const ID{(commandlineArguments["id"].size() != 0) ? static_cast<uint32_t>(std::stoi(commandlineArguments["id"])) : 0};
@@ -36,10 +44,11 @@ int32_t main(int32_t argc, char **argv) {
     uint16_t const CID = std::stoi(commandlineArguments["cid"]);
     std::string const CHANNEL = commandlineArguments["channel"];
     float const FREQ = std::stof(commandlineArguments["freq"]);
+    float const CONVERSION2VOLT = std::stof(commandlineArguments["conversion"]);
 
     cluon::OD4Session od4{CID};
 
-    auto atFrequency{[&CHANNEL, &ID, &VERBOSE, &od4]() -> bool
+    auto atFrequency{[&CONVERSION2VOLT, &CHANNEL, &ID, &VERBOSE, &od4]() -> bool
       {
         int32_t output{0};
         std::ifstream adcNode("/sys/bus/iio/devices/iio:device0/in_voltage" + CHANNEL + "_raw");
@@ -51,7 +60,7 @@ int32_t main(int32_t argc, char **argv) {
           std::cerr << "Failed to read from /sys/bus/iio/devices/iio:device0/in_voltage" + CHANNEL + "_raw." << std::endl;
         }
         adcNode.close();
-        float const voltage{output * 1.8f / 4095.0f};
+        float const voltage{output * CONVERSION2VOLT / 4095.0f};
 
         opendlv::proxy::VoltageReading voltageReading;
         voltageReading.voltage(voltage);
