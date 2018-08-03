@@ -64,11 +64,23 @@ int32_t main(int32_t argc, char **argv) {
 
         opendlv::proxy::VoltageReading voltageReading;
         voltageReading.voltage(voltage);
-
+      
+        opendlv::proxy::DistanceReading distanceReading;
+        // dIR0 = 12.174 * powf((d0) * (3.0 / 4096), -1.051);
+        float const distance{12.174 * powf(voltage, -1.051)};
+        if(voltage >= 3.0f && distance <= 40) {
+          distanceReading.distance(distance/100f);
+        } else {
+          distanceReading.distance(-1);
+        }
+      
         cluon::data::TimeStamp sampleTime = cluon::time::now();
         od4.send(voltageReading, sampleTime, ID);
+      
+        od4.send(distanceReading, sampleTime, ID);
         if (VERBOSE) {
           std::cout << "Voltage reading is " << voltageReading.voltage() << " V." << std::endl;
+          std::cout << "Distance reading is " << distanceReading.distance() << " m." << std::endl;
         }
         return true;
       }};
