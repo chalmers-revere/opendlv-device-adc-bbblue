@@ -22,8 +22,8 @@
 #include "cluon-complete.hpp"
 #include "opendlv-standard-message-set.hpp"
 
-// Lipo jack channel 6, converstion: 1.8*11 = 19.8
-// DC jack channel 5, converseion: 1.8*11 = 19.8
+// Lipo jack channel 6, conversion: 1.8*11 = 19.8
+// DC jack channel 5, conversion: 1.8*11 = 19.8
 
 
 int32_t main(int32_t argc, char **argv) {
