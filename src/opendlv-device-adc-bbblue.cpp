@@ -67,7 +67,7 @@ int32_t main(int32_t argc, char **argv) {
       
         opendlv::proxy::DistanceReading distanceReading;
         float distance{(1.0f / (voltage / 10.13f)) - 3.8f };
-        if(voltage >= 3.0f && distance <= 40.0f) {
+        if(voltage > 3.0f && distance < 40.0f) {
           distanceReading.distance(distance/100.0f);
         } else {
           distanceReading.distance(-1);
