@@ -31,9 +31,7 @@ int32_t main(int32_t argc, char **argv) {
   auto commandlineArguments = cluon::getCommandlineArguments(argc, argv);
   if (0 == commandlineArguments.count("cid") ||
       0 == commandlineArguments.count("freq") || 
-      0 == commandlineArguments.count("channel") ||
-      0 == commandlineArguments.count("conversion")
-      ) {
+      0 == commandlineArguments.count("channel")) {
     std::cerr << argv[0] << " interfaces to the analog-to-digital converters on the BeagleBone Blue." << std::endl;
     std::cerr << "Usage:   " << argv[0] << " --freq=<frequency> --cid=<OpenDaVINCI session> --channel=<the ADC channel to read> [--id=<Identifier in case of multiple sensors] [--verbose]" << std::endl;
     std::cerr << "Example: " << argv[0] << " --freq=10 --cid=111 --channel=0 " << std::endl;
