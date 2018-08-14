@@ -69,12 +69,12 @@ int32_t main(int32_t argc, char **argv) {
         adcNode.close();
         float voltage{output * conversion2Volt / 4095.0f};
 
-        if (std::stoi(CHANNEL) == 5) {
-          voltage += -0.15f;
-        }
-        if (std::stoi(CHANNEL) == 6) {
-          voltage += -0.1f;
-        }
+        // if (std::stoi(CHANNEL) == 5) {
+        //   voltage += -0.15f;
+        // }
+        // if (std::stoi(CHANNEL) == 6) {
+        //   voltage += -0.1f;
+        // }
 
         opendlv::proxy::VoltageReading voltageReading;
         voltageReading.voltage(voltage);
