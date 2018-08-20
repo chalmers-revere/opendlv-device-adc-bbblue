@@ -84,7 +84,7 @@ int32_t main(int32_t argc, char **argv) {
         opendlv::proxy::DistanceReading distanceReading;
         if (std::stoi(CHANNEL) < 5) {
           float distance{(1.0f / (voltage / 10.13f)) - 3.8f };
-          if(voltage > 3.0f && distance < 40.0f) {
+          if(distance > 3.0f && distance < 40.0f) {
             distanceReading.distance(distance/100.0f);
             od4.send(distanceReading, sampleTime, ID);
           } else {
